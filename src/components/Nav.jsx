@@ -3,6 +3,9 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
+import List from '@mui/material/List';
+import TextField from '@mui/material/TextField';
+
 
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState({
@@ -21,9 +24,13 @@ export default function TemporaryDrawer() {
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+    //   onClick={toggleDrawer(anchor, false)}
+    //   onKeyDown={toggleDrawer(anchor, false)}
     >
+      <List>
+        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+      </List>
+
     </Box>
   );
 
