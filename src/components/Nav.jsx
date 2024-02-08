@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
+import './Nav.css';
 
 
 export default function TemporaryDrawer() {
@@ -43,8 +44,15 @@ export default function TemporaryDrawer() {
             anchor='left'
             open={state['left']}
             onClose={toggleDrawer('left', false)}
+            PaperProps={{
+                sx: {
+                  backgroundColor: "#053162",
+                  color: "#DBF9AC"
+                }
+              }}
           >
             {list('left')}
+            <p>test</p>
           </Drawer>
         </React.Fragment>
     </div>
