@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import './Nav.css';
 
@@ -14,6 +15,31 @@ export default function TemporaryDrawer() {
     left: false,
   });
 
+  const CssTextField = styled(TextField)({
+    '& label.Mui-focused': {
+      color: '#DBF9AC',
+    },
+    '& label.MuiInputLabel-root': {
+        color: '#DBF9AC'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#DBF9AC',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#DBF9AC',
+        color: 'orange'
+      },
+      '&:hover fieldset': {
+        borderColor: '#F5B0E6',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#DBF9AC',
+      },
+    },
+  });
+  
+  
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -30,7 +56,16 @@ export default function TemporaryDrawer() {
     //   onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+        <CssTextField
+            id="outlined-basic"
+            label="Filter locations..."
+            variant="outlined"
+            sx={{
+                border: "1px",
+                borderColor: "orange !important"
+            }}
+            inputProps={{
+                style: { color: '#DBF9AC' } }} />
       </List>
       <Divider />
     </Box>
@@ -47,7 +82,8 @@ export default function TemporaryDrawer() {
             PaperProps={{
                 sx: {
                   backgroundColor: "#053162",
-                  color: "#DBF9AC"
+                  color: "#DBF9AC",
+                  padding: "2em"
                 }
               }}
           >
