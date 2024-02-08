@@ -11,8 +11,8 @@ function App() {
   console.log(import.meta.env.MAP_BOX_KEY, "keyyyy")
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
+  const [lng, setLng] = useState(-78.8986);
+  const [lat, setLat] = useState(35.9940);
   const [zoom, setZoom] = useState(9);
 
   useEffect(() => {
