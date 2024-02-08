@@ -68,5 +68,6 @@ button:focus-visible {
 }
 
 .map-container {
-  height: 400px;
+  height: 100vh;
+  width: 100vw;
   }
