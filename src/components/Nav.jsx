@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
 import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
 
 
 export default function TemporaryDrawer() {
@@ -30,7 +31,7 @@ export default function TemporaryDrawer() {
       <List>
         <TextField id="outlined-basic" label="Outlined" variant="outlined" />
       </List>
-
+      <Divider />
     </Box>
   );
 
