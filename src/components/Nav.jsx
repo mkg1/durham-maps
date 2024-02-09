@@ -17,6 +17,8 @@ export default function SearchDrawer() {
     left: false,
   });
 
+  const [markers, setMarkers] = React.useState(DEFAULT_MARKERS.features);
+
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
       color: '#DBF9AC',
@@ -50,6 +52,11 @@ export default function SearchDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
+  const handleInputChange = (e) => {
+    let filteredMarkers = DEFAULT_MARKERS.features.filter((marker) => {return marker.properties.name && marker.properties.name.includes(e.target.value)})
+    setMarkers(filteredMarkers)
+  }
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -62,6 +69,7 @@ export default function SearchDrawer() {
             id="outlined-basic"
             label="Filter locations..."
             variant="outlined"
+            onChange={(e) => handleInputChange(e)}
             sx={{
                 border: "1px",
                 borderColor: "orange !important"
@@ -69,7 +77,7 @@ export default function SearchDrawer() {
             inputProps={{
                 style: { color: '#DBF9AC' } }} />
 
-        {DEFAULT_MARKERS.features.map((loc) => 
+        {markers.map((loc) => 
             <>
                 <ListItem>{loc.properties.name || "no name "}</ListItem>
                 <Divider />
