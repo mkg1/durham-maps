@@ -4,13 +4,15 @@ import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem'
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import './Nav.css';
+import { DEFAULT_MARKERS } from '../constants';
 
 
-export default function TemporaryDrawer() {
+export default function SearchDrawer() {
   const [state, setState] = React.useState({
     left: false,
   });
@@ -66,8 +68,14 @@ export default function TemporaryDrawer() {
             }}
             inputProps={{
                 style: { color: '#DBF9AC' } }} />
+
+        {DEFAULT_MARKERS.features.map((loc) => 
+            <>
+                <ListItem>{loc.properties.name || "no name "}</ListItem>
+                <Divider />
+            </>
+        )}
       </List>
-      <Divider />
     </Box>
   );
 
@@ -88,7 +96,6 @@ export default function TemporaryDrawer() {
               }}
           >
             {list('left')}
-            <p>test</p>
           </Drawer>
         </React.Fragment>
     </div>
