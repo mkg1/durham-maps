@@ -4,6 +4,7 @@ import Nav from './components/Nav'
 // import Map from './components/Map'
 import mapboxgl from 'mapbox-gl';
 import { DEFAULT_MARKERS } from './constants'
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
