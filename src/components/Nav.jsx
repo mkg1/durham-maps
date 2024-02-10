@@ -17,6 +17,7 @@ export default function SearchDrawer() {
     left: false,
   });
 
+  const [searchTerm, setSearchTerm] = React.useState('');
   const [markers, setMarkers] = React.useState(DEFAULT_MARKERS.features);
 
   const CssTextField = styled(TextField)({
@@ -52,7 +53,9 @@ export default function SearchDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
-  const handleInputChange = (e) => {
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
     let filteredMarkers = DEFAULT_MARKERS.features.filter((marker) => {return marker.properties.name && marker.properties.name.includes(e.target.value)})
     setMarkers(filteredMarkers)
   }
@@ -69,7 +72,9 @@ export default function SearchDrawer() {
             id="outlined-basic"
             label="Filter locations..."
             variant="outlined"
-            onChange={(e) => handleInputChange(e)}
+            value={searchTerm}
+            onChange={handleSearch}
+            autoFocus
             sx={{
                 border: "1px",
                 borderColor: "orange !important"
@@ -77,9 +82,9 @@ export default function SearchDrawer() {
             inputProps={{
                 style: { color: '#DBF9AC' } }} />
 
-        {markers.map((loc) => 
+        {markers.map((loc, index) => 
             <>
-                <ListItem>{loc.properties.name || "no name "}</ListItem>
+                <ListItem key={index}>{loc.properties.name || "no name "}</ListItem>
                 <Divider />
             </>
         )}
