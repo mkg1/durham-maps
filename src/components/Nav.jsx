@@ -9,16 +9,16 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import './Nav.css';
-import { DEFAULT_MARKERS } from '../constants';
+// import { DEFAULT_MARKERS } from '../constants';
 
 
-export default function SearchDrawer() {
+export default function SearchDrawer({ onchange, searchTerm, markers }) {
   const [state, setState] = React.useState({
     left: false,
   });
 
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [markers, setMarkers] = React.useState(DEFAULT_MARKERS.features);
+//   const [searchTerm, setSearchTerm] = React.useState('');
+//   const [markers, setMarkers] = React.useState(DEFAULT_MARKERS.features);
 
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
@@ -53,13 +53,6 @@ export default function SearchDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
-  const handleSearch = (e) => {
-    const searchTerm = e.target.value;
-    setSearchTerm(searchTerm);
-    let filteredMarkers = DEFAULT_MARKERS.features.filter((marker) => {return marker.properties.name && marker.properties.name.includes(e.target.value)})
-    setMarkers(filteredMarkers)
-  }
-
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -73,7 +66,7 @@ export default function SearchDrawer() {
             label="Filter locations..."
             variant="outlined"
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={onchange}
             autoFocus
             sx={{
                 border: "1px",

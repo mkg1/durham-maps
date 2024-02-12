@@ -11,12 +11,15 @@ mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 
 
 function App() {
+  const unfilteredMarkers = DEFAULT_MARKERS.features;
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-78.8986);
   const [lat, setLat] = useState(35.9940);
   const [zoom, setZoom] = useState(9);
-
+  const [geoJSON, setGeoJSON] = useState(unfilteredMarkers)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentMarkers, setCurrentMarkers] = useState({})
 
   useEffect(() => {
     // initialize map only once
@@ -30,20 +33,27 @@ function App() {
   }, []);
   
   useEffect(() => {
-    console.log("wheeeee")
     if(map.current) {
-      for (const feature of DEFAULT_MARKERS.features) {
-      // make a marker for each feature and add to the map
-      const el = document.getElementsByClassName('marker');
-      el.className = 'marker'
-      new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map.current)
+      let currentMarkerObj = {};
+      for (const feature of unfilteredMarkers) {
+        let featureId = feature.id;
+        let newMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
+        currentMarkerObj[featureId] = newMarker;
+        setCurrentMarkers({...currentMarkerObj});
       }}
   }, [])
 
+  useEffect(() => {
+      var currentMarkerKeys = Object.keys(currentMarkers)
+      var geoJSONKeys = geoJSON.map((loc) => {return loc.id})
+      var plop = currentMarkerKeys.filter((x) => !geoJSONKeys.includes(x))
+      for (const cle of plop) {
+        currentMarkers[cle].remove()
+      }
+  }, [geoJSON])
 
   useEffect(() => {
     if (map.current) {
-      console.log("but do we make it here?")
       map.current.on('move', () => {
         setLng(map.current.getCenter().lng.toFixed(4));
         setLat(map.current.getCenter().lat.toFixed(4));
@@ -51,10 +61,17 @@ function App() {
         });  
     }  
   }, [])
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+    let filteredMarkers = DEFAULT_MARKERS.features.filter((marker) => {return marker.properties.name && marker.properties.name.includes(e.target.value)})
+    setGeoJSON(filteredMarkers)
+  }
     
   return (
     <div className="App">
-      <Nav />
+      <Nav onchange={handleSearch} searchTerm={searchTerm} markers={geoJSON} />
       <div className="sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
