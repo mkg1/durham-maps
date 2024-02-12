@@ -20,6 +20,7 @@ function App() {
   const [geoJSON, setGeoJSON] = useState(unfilteredMarkers)
   const [searchTerm, setSearchTerm] = useState('');
   const [currentMarkers, setCurrentMarkers] = useState({})
+  let markersRendered = false;
 
   useEffect(() => {
     // initialize map only once
@@ -33,13 +34,14 @@ function App() {
   }, []);
   
   useEffect(() => {
-    if(map.current) {
+    if(map.current && !markersRendered) {
       let currentMarkerObj = {};
       for (const feature of unfilteredMarkers) {
         let featureId = feature.id;
         let newMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
         currentMarkerObj[featureId] = newMarker;
         setCurrentMarkers({...currentMarkerObj});
+        markersRendered = true;
       }}
   }, [])
 
