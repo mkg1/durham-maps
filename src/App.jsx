@@ -66,13 +66,17 @@ function App() {
           console.log("before...? ", currentMarkerKeys, feature.id)
           if (currentMarkerKeys.length !== 0 && !currentMarkerKeys.includes(feature.id)) {
             console.log("did we make it here? ", currentMarkerKeys)
-            new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
+            let newMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
+            // add new markers to current markers state
+            setCurrentMarkers({...currentMarkers, [feature.id]: newMarker})
+            console.log("Did it add a new marker?? ", currentMarkers)
           }
         }
         for (const key of keysToRemove) {
           console.log("updating markers: ", updatingMarkers)
           console.log("key to delete: ", key, updatingMarkers[key])
-          currentMarkers[key].remove() //this doesn't actually update the state...
+          // remove marker - doesn't update actual state
+          currentMarkers[key].remove()
           delete updatingMarkers[key];
           console.log("updating markers after deletion: ", updatingMarkers)
           setCurrentMarkers(updatingMarkers)
