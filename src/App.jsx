@@ -52,7 +52,6 @@ function App() {
       if (Object.keys(currentMarkers).length === 0) {
         console.log("empty object for currentMarkers");
       } else {
-        console.log("Made it into the updater loop")
         const updatingMarkers = {...currentMarkers}
         var currentMarkerKeys = Object.keys(currentMarkers)
         var filteredGeoJSONKeys = filteredGeoJSON.map((loc) => {return loc.id})
@@ -68,7 +67,8 @@ function App() {
             console.log("did we make it here? ", currentMarkerKeys)
             let newMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
             // add new markers to current markers state
-            setCurrentMarkers({...currentMarkers, [feature.id]: newMarker})
+            updatingMarkers[feature.id] = newMarker
+            setCurrentMarkers(updatingMarkers)
             console.log("Did it add a new marker?? ", currentMarkers)
           }
         }
