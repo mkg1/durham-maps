@@ -11,13 +11,13 @@ mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 
 
 function App() {
-  const unfilteredMarkers = DEFAULT_MARKERS.features;
+  const unfilteredGeoJSON = DEFAULT_MARKERS.features;
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-78.8986);
   const [lat, setLat] = useState(35.9940);
   const [zoom, setZoom] = useState(9);
-  const [geoJSON, setGeoJSON] = useState(unfilteredMarkers)
+  const [filteredGeoJSON, setFilteredGeoJSON] = useState(unfilteredGeoJSON)
   const [searchTerm, setSearchTerm] = useState('');
   const [currentMarkers, setCurrentMarkers] = useState({})
   let markersRendered = false;
@@ -33,26 +33,38 @@ function App() {
     }); 
   }, []);
   
+    // check if markers have already rendered - this gets around strict mdoe rendering each marker 2x
+    // create a marker for each item in unfiltered geoJSON
+    // setting a key-value pair for markerId: marker in order to grab marker by its id later 
   useEffect(() => {
     if(map.current && !markersRendered) {
-      let currentMarkerObj = {};
-      for (const feature of unfilteredMarkers) {
-        let featureId = feature.id;
+      let markersWithId = {};
+      for (const feature of unfilteredGeoJSON) {
         let newMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
-        currentMarkerObj[featureId] = newMarker;
-        setCurrentMarkers({...currentMarkerObj});
+        markersWithId[feature.id] = newMarker;
         markersRendered = true;
+        setCurrentMarkers({...markersWithId});
       }}
   }, [])
 
+  // when the geoJSON obj changes, remove or recreate markers as needed
   useEffect(() => {
       var currentMarkerKeys = Object.keys(currentMarkers)
-      var geoJSONKeys = geoJSON.map((loc) => {return loc.id})
-      var plop = currentMarkerKeys.filter((x) => !geoJSONKeys.includes(x))
-      for (const cle of plop) {
-        currentMarkers[cle].remove()
+      var filteredGeoJSONKeys = filteredGeoJSON.map((loc) => {return loc.id})
+      // filter the list of current marker keys and remove associated value (marker) if not present in filtered geoJSON keys
+      var filteredOutKeys = currentMarkerKeys.filter((x) => !filteredGeoJSONKeys.includes(x))
+      for (const feature of filteredGeoJSON) {
+        // if feature.id does not exist in currentmarkers, add one
+        console.log("before...? ", currentMarkerKeys, feature.id)
+        if (currentMarkerKeys.length !== 0 && !currentMarkerKeys.includes(feature.id)) {
+          console.log("did we make it here? ", currentMarkerKeys)
+          new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
+        }
       }
-  }, [geoJSON])
+      for (const key of filteredOutKeys) {
+        currentMarkers[key].remove() //this doesn't actually update the state...
+      }
+  }, [filteredGeoJSON])
 
   useEffect(() => {
     if (map.current) {
@@ -64,16 +76,18 @@ function App() {
     }  
   }, [])
 
+  // use the entered search term to filter the DEFAULT_MARKERS list
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     setSearchTerm(searchTerm);
-    let filteredMarkers = DEFAULT_MARKERS.features.filter((marker) => {return marker.properties.name && marker.properties.name.includes(e.target.value)})
-    setGeoJSON(filteredMarkers)
+    let filteredGeoJSON = unfilteredGeoJSON.filter((marker) => {return marker.properties.name && marker.properties.name.includes(searchTerm)})
+    // set geoJSON to the filtered markers
+    setFilteredGeoJSON(filteredGeoJSON)
   }
     
   return (
     <div className="App">
-      <Nav onchange={handleSearch} searchTerm={searchTerm} markers={geoJSON} />
+      <Nav onchange={handleSearch} searchTerm={searchTerm} markers={filteredGeoJSON} />
       <div className="sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
