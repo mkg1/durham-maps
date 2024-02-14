@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react'
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
@@ -9,16 +9,12 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import './Nav.css';
-// import { DEFAULT_MARKERS } from '../constants';
 
 
 export default function SearchDrawer({ onchange, searchTerm, markers }) {
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     left: false,
   });
-
-//   const [searchTerm, setSearchTerm] = React.useState('');
-//   const [markers, setMarkers] = React.useState(DEFAULT_MARKERS.features);
 
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
@@ -57,8 +53,6 @@ export default function SearchDrawer({ onchange, searchTerm, markers }) {
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-    //   onClick={toggleDrawer(anchor, false)}
-    //   onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
         <CssTextField
@@ -87,7 +81,7 @@ export default function SearchDrawer({ onchange, searchTerm, markers }) {
 
   return (
     <div>
-        <React.Fragment key={'left'}>
+        <>
           <Button onClick={toggleDrawer('left', true)}><MenuIcon /></Button>
           <Drawer
             anchor='left'
@@ -95,7 +89,7 @@ export default function SearchDrawer({ onchange, searchTerm, markers }) {
             onClose={toggleDrawer('left', false)}
             PaperProps={{
                 sx: {
-                  backgroundColor: "#053162",
+                  backgroundColor: "#213547",
                   color: "#DBF9AC",
                   padding: "2em"
                 }
@@ -103,7 +97,7 @@ export default function SearchDrawer({ onchange, searchTerm, markers }) {
           >
             {list('left')}
           </Drawer>
-        </React.Fragment>
+        </>
     </div>
   );
 }
