@@ -51,7 +51,7 @@ export default function SearchDrawer({ onchange, searchTerm, markers }) {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: 250 }}
       role="presentation"
     >
       <List>
@@ -80,9 +80,10 @@ export default function SearchDrawer({ onchange, searchTerm, markers }) {
   );
 
   return (
-    <div>
+    <div id="navbar">
         <>
           <Button onClick={toggleDrawer('left', true)}><MenuIcon /></Button>
+          <h3>Durham Trails</h3>
           <Drawer
             anchor='left'
             open={state['left']}
