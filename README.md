@@ -1,5 +1,7 @@
 # Durham Trails Map
 
+![Durham Trails Map](./public/durham_mapbox.png)
+
 ## Overview
 A simple, searchable map of local Durham trails using the [Mapbox GL JS API](https://docs.mapbox.com/mapbox-gl-js/api/) and built with React. This project was created as a solo project precursor for [Chingu Voyages](https://www.chingu.io/).
 
