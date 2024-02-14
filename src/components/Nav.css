@@ -1,3 +1,16 @@
 button {
     color: #F5B0E6 !important;
 }
+
+hr {
+    border-color: #F5B0E6 !important;
+}
+
+#navbar {
+    display: flex;
+}
+
+h3 {
+    line-height: 1em;
+    color: #DBF9AC;
+}
