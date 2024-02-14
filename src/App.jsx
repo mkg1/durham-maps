@@ -42,7 +42,6 @@ function App() {
         let newMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
         markersWithId[feature.id] = newMarker;
         markersRendered = true;
-        console.log("markers rendered...", markersWithId)
         setCurrentMarkers({...markersWithId});
       }}
   }, [])
@@ -50,7 +49,6 @@ function App() {
   // when the geoJSON obj changes, remove or recreate markers as needed
   useEffect(() => {
       if (Object.keys(currentMarkers).length === 0) {
-        console.log("empty object for currentMarkers");
       } else {
         const updatingMarkers = {...currentMarkers}
         var currentMarkerKeys = Object.keys(currentMarkers)
@@ -58,27 +56,19 @@ function App() {
         // filter the list of current marker keys and remove associated value (marker) if not present in filtered geoJSON keys
         var keysToRemove = currentMarkerKeys.filter((x) => !filteredGeoJSONKeys.includes(x))
         var markerKeysToAdd = filteredGeoJSONKeys.filter((x) => !currentMarkerKeys.includes(x))
-        console.log("Current keys and filtered JSON keys: ", currentMarkerKeys, filteredGeoJSONKeys)
-        console.log("Keys to remove and add: ", keysToRemove, markerKeysToAdd)
         for (const feature of filteredGeoJSON) {
           // if feature.id does not exist in currentmarkers, add one
-          console.log("before...? ", currentMarkerKeys, feature.id)
           if (currentMarkerKeys.length !== 0 && !currentMarkerKeys.includes(feature.id)) {
-            console.log("did we make it here? ", currentMarkerKeys)
             let newMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map.current)
             // add new markers to current markers state
             updatingMarkers[feature.id] = newMarker
             setCurrentMarkers(updatingMarkers)
-            console.log("Did it add a new marker?? ", currentMarkers)
           }
         }
         for (const key of keysToRemove) {
-          console.log("updating markers: ", updatingMarkers)
-          console.log("key to delete: ", key, updatingMarkers[key])
           // remove marker - doesn't update actual state
           currentMarkers[key].remove()
           delete updatingMarkers[key];
-          console.log("updating markers after deletion: ", updatingMarkers)
           setCurrentMarkers(updatingMarkers)
         }  
       }
